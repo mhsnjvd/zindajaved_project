@@ -28,6 +28,7 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': get_env_variable('DATABASE_NAME'),
             'TEST_NAME': get_env_variable('TEST_DATABASE_NAME'),
+            'TEST': { 'NAME': get_env_variable('TEST_DATABASE_NAME'), },
             'USER': get_env_variable('DATABASE_USER'),
             'PASSWORD': get_env_variable('DATABASE_PASSWORD'),
             'HOST': get_env_variable('DATABASE_HOSTNAME'),
