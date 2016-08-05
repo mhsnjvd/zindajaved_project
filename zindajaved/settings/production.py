@@ -35,3 +35,10 @@ DATABASES = {
             'PORT': '',
             }
         }
+
+
+# Where to redirect if the login is successful:
+LOGIN_REDIRECT_URL = '/'
+
+
+

@@ -63,12 +63,3 @@ def post_remove(request, pk):
     post.delete()
     return redirect('blog.views.post_list')
 
-
-
-
-
-
-
-
-
-
