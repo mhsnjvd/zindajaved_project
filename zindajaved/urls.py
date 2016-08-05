@@ -25,7 +25,7 @@ from .views import home
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', django.contrib.auth.views.login, name='login'),
-    url(r'^accounts/logout/$', django.contrib.auth.views.logout, name='logout', kwargs={'next_page': '/'}),
+    url(r'^accounts/logout/$', django.contrib.auth.views.logout, name='logout', kwargs={'next_page': '/blog/list'}),
     url(r'^$', home, name='home'),
     url(r'^blog/', include('blog.urls')),
 ]
