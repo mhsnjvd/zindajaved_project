@@ -87,6 +87,8 @@ WSGI_APPLICATION = 'zindajaved.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 # Moved to appropriate settings file
 
+# It is important to provide site id if django.contrib.sites is to be used
+SITE_ID = 1
 
 
 # Password validation
