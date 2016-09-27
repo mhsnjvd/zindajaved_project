@@ -85,13 +85,8 @@ WSGI_APPLICATION = 'zindajaved.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+# Moved to appropriate settings file
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 
 # Password validation
@@ -125,17 +120,11 @@ INSTALLED_APPS += (
      'django.contrib.sites',
      'allauth',
      'allauth.account',
-     'allauth.socialaccount',
-     # Login via Google
-     'allauth.socialaccount.providers.google',
 )
  
-SITE_ID = 1
 
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = "none"
-SOCIALACCOUNT_QUERY_EMAIL = True
-LOGIN_REDIRECT_URL = "/"
+# Where to redirect if the login is successful
+LOGIN_REDIRECT_URL = "/blog/list"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -150,6 +139,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+# MathJax settings:
+INSTALLED_APPS += (
+        'django_mathjax',
+)
+
+MATHJAX_ENABLED = True
+MATHJAX_LOCAL_PATH = '/MathJax/'
+MATHJAX_CONFIG_FILE="TeX-MML-AM_CHTML"
 
 # Settings related to static files moved to corresponding
 # setting files
