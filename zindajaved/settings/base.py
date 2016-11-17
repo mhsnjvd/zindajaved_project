@@ -48,7 +48,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Not sure whether we need these or not:
+    # The Django sites framework is required
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    # MathJax app
+    'django_mathjax',
+    # Our apps
     'blog',
+    'ml',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -87,6 +96,8 @@ WSGI_APPLICATION = 'zindajaved.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 # Moved to appropriate settings file
 
+# It is important to provide site id if django.contrib.sites is to be used
+SITE_ID = 1
 
 
 # Password validation
@@ -115,13 +126,6 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-INSTALLED_APPS += (
-     # The Django sites framework is required
-     'django.contrib.sites',
-     'allauth',
-     'allauth.account',
-)
- 
 
 # Where to redirect if the login is successful
 LOGIN_REDIRECT_URL = "/blog/list"
@@ -139,11 +143,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-# MathJax settings:
-INSTALLED_APPS += (
-        'django_mathjax',
-)
 
+# MathJax Settings:
 MATHJAX_ENABLED = True
 MATHJAX_LOCAL_PATH = '/MathJax/'
 MATHJAX_CONFIG_FILE="TeX-MML-AM_CHTML"
