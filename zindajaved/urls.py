@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'^accounts/logout/$', django.contrib.auth.views.logout, name='logout', kwargs={'next_page': '/blog/list'}),
     url(r'^$', home, name='home'),
     url(r'^blog/', include('blog.urls')),
-    url(r'^ml/', include('ml.urls')),
+    #url(r'^ml/', include('ml.urls')),
 ]

@@ -1,4 +1,4 @@
 Django==1.10.3
 mysqlclient==1.3.7
 django-allauth==0.28.0
-djanog-mathjax==0.0.5
+django-mathjax==0.0.5
