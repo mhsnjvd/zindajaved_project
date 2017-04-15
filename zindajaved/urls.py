@@ -17,7 +17,6 @@ from django.conf.urls import url, include
 import django.contrib.auth.views
 
 
-
 from django.contrib import admin
 admin.autodiscover()
 from .views import home
