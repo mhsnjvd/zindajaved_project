@@ -147,7 +147,17 @@ USE_TZ = True
 # MathJax Settings:
 MATHJAX_ENABLED = True
 MATHJAX_LOCAL_PATH = '/MathJax/'
-MATHJAX_CONFIG_FILE="TeX-MML-AM_CHTML"
+#MATHJAX_CONFIG_FILE="TeX-MML-AM_CHTML"
+MATHJAX_CONFIG_FILE = "TeX-AMS-MML_HTMLorMML"
+MATHJAX_CONFIG_DATA = {
+  "tex2jax": {
+    "inlineMath":
+      [
+          ['$','$'],
+          ['\\(','\\)']
+      ]
+  }
+}
 
 # Settings related to static files moved to corresponding
 # setting files

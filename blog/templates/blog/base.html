@@ -52,8 +52,80 @@
                 {% else %}
                     <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a> 
                 {% endif %}
-                <h1 dir='rtl'><a href="{% url 'post_list' %}">کچھ چھوٹی چھوٹی باتیں</a></h1>
+                <!-- <h1 dir='rtl'><a href="{% url 'post_list' %}">کچھ چھوٹی چھوٹی باتیں</a></h1> -->
+                <h1>Adventures in probability</h1>
             </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>One more toss</h2>
+                    <h4>April 16, 2017</h4>
+                    <p>
+                        Suppose Asma and Babar decide to play a coin 
+                        tossing game. We suppose that Asma 
+                        tosses $n$ fair coins while Babar tosses $n+1$ fair 
+                        coins. The player with more heads wins the game. What 
+                        is the probability that Babar wins the game?
+                    </p>
+
+                    <p>
+                        Let us define the following random variables.
+                        <div style="text-align:left">
+                            $$A_n = \text{# of heads thrown by Asma in $n$ tosses},$$
+                            $$B_n = \text{# of heads thrown by Babar in $n$ tosses}.$$
+                        </div>
+                        We are trying to find the probability $P(B_{n+1} > A_n)$.
+                        Let us now condition on the first $n$ tosses. Either 
+                        $B_n = A_n$ or $B_n > A_n$. Then by the law of total 
+                        probability
+                        $$P(B_{n+1} > A_n) = P(B_{n+1} > A_n | B_n > A_n) + 
+                        P(B_{n+1} > A_n | B_n = A_n).$$
+
+                        <p>
+                        If $B_n > A_n$ then certainly $B_{n+1} > A_n$.
+                        However, if $B_n=A_n$, then $B_{n+1} > A_n$ only if 
+                        Babar's $(n+1)^{st}$ toss is a head and this 
+                        happens with probability $1/2$ since the coin
+                        is fair.
+                        </p>
+
+                        We can therefore write
+                        $$P(B_{n+1} > A_n) = 1 \times P(B_n > A_n) + 
+                        \frac{1}{2} P(B_n = A_n).$$
+
+                        We also have the identity
+                        $$P(A_n = B_n) + P(A_n > B_n) + P(A_n < B_n) = 1.$$
+
+                        Let $P(A_n = B_n) = x$ and $P(A_n > B_n) = p$.
+                        By symmetry, we also have $P(B_n > A_n) = p$. 
+                        Therefore, 
+                        $$2p + x = 1,$$ 
+                        which implies
+                        $$p = \frac{1 - x}{2}.$$
+                        Using this expression, we have 
+                        $$P(B_{n+1} > A_n) = \frac{1 - x}{2} + 
+                        \frac{1}{2} x,$$
+                        which simplifies to the surprising 
+                        result
+                        $$P(B_{n+1} > A_n) = \frac{1}{2}.$$
+
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
 
             <div class="row">
 
@@ -63,23 +135,17 @@
                 </div>
             </div>
 
+
+
+
             <div class="row">
-
                 <p>
-                Suppose Asma and Babar decide to play a game. 
-                Asma tosses \[n=10\] fair coins while Babar 
-                tosses $n+1=11$ fair coins. The player with 
-                more heads wins the game. What is the
-                probability that Babar wins the game?
+                    $$f(z) = \sum_{k=0}^{\infty} a_k z^k.$$
                 </p>
-
-
-                <p>
-                Perhaps one of the most beautiful equations of 
-                mathematics is $$\int_{\Gamma} f(z) \:dz = 0.$$
-                </p>
-
             </div>
+
+
+
         </div>
 
 
