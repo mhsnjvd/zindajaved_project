@@ -19,13 +19,16 @@ import django.contrib.auth.views
 
 from django.contrib import admin
 admin.autodiscover()
-from .views import home
+from .views import home, thesis
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^thesis$', thesis, name='thesis'),
     url(r'^accounts/login/$', django.contrib.auth.views.login, name='login'),
     url(r'^accounts/logout/$', django.contrib.auth.views.logout, name='logout', kwargs={'next_page': '/blog/list'}),
     url(r'^$', home, name='home'),
     url(r'^blog/', include('blog.urls')),
     #url(r'^ml/', include('ml.urls')),
+    #url(r'^canals/', include('canals.urls')),
+    url(r'^music/', include('music.urls')),
 ]

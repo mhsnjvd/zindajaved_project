@@ -57,7 +57,9 @@ INSTALLED_APPS = [
     'django_mathjax',
     # Our apps
     'blog',
+    'music',
     #'ml',
+    #'canals',
 ]
 
 MIDDLEWARE_CLASSES = [
