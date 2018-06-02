@@ -19,8 +19,9 @@ if RUNNING_LOCAL:
 else:
     DEBUG = False
     ALLOWED_HOSTS = ['www.zindajaved.com']
-    SSL_CLASS = ['sslify.middleware.SSLifyMiddleware'];
-    MIDDLEWARE_CLASSES = SSL_CLASS + MIDDLEWARE_CLASSES;
+    SSL_CLASS = ['sslify.middleware.SSLifyMiddleware']
+    MIDDLEWARE_CLASSES = SSL_CLASS + MIDDLEWARE_CLASSES
+    SECURE_SSL_REDIRECT = True
     # pythonanywher requires STATIC_ROOT to be set and 
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
 

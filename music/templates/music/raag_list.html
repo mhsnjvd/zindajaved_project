@@ -1,0 +1,13 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    {% for raag in raags %}
+        <div class="post">
+            <div class="date">
+                {{ raag.entry_publish_date }}
+            </div>
+            <h1><a href="{% url 'raag_detail' pk=raag.pk %}">{{ raag.title }}</a></h1>
+            <p>{{ raag.text|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
