@@ -13,9 +13,7 @@ if RUNNING_LOCAL:
     DEBUG = True
     ALLOWED_HOSTS = ['localhost']
     # STATICFILES_DIRS should be set for local use
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, "static"),
-    )
+    STATICFILES_DIRS = ( os.path.join(BASE_DIR, "static"),)
 else:
     DEBUG = False
     ALLOWED_HOSTS = ['www.zindajaved.com']
@@ -42,5 +40,8 @@ DATABASES = {
             'PASSWORD': get_env_variable('DATABASE_PASSWORD'),
             'HOST': get_env_variable('DATABASE_HOSTNAME'),
             'PORT': '',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_ALL_TABLES'",
+                },
             }
         }
