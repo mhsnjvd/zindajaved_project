@@ -1,0 +1,19 @@
+{% extends 'vis/base.html' %}
+
+{% block content %}
+    {% for company_name in company_names %}
+      <div class="post-preview">
+          <h2 class="post-title">
+              {{ company_name }}
+          </h2>
+          <h3 class="post-subtitle">
+            {{ company_name }}
+          </h3>
+        </a>
+        <p class="post-meta">Posted by
+          <a href="#">{{ company_name }}</a>
+          on {{ company_name }}
+      </div>
+      <hr>
+    {% endfor %}
+{% endblock %}
