@@ -60,15 +60,40 @@
                 </div>
             </div>
 
+        </div>
+
+        <br>
+
+        <div class="content container">
             <div class="row">
                 <div class="col-sm blog-main">
                     {% block company_data %}
                     {% endblock %}
                 </div>
             </div>
-
         </div>
 
+        <br>
+
+        <div class="content container">
+            <div class="row">
+                <div class="col-sm blog-main">
+                    {% block company_visualization %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="content container">
+            <div class="row">
+                <div class="col-sm blog-main">
+                    {% block company_data_frame %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
 
         <footer class="blog-footer">
         <p>Made for <a href="{% url 'home' %}">zindajaved.com</a> by <a href="https://github.com/mhsnjvd">@mohsin</a>.</p>

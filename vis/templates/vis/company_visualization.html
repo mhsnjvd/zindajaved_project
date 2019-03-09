@@ -12,24 +12,6 @@
           </div>
     </div>
 
-    <!---
-    <h3>Select the name of the company<h3>
-      {% for company_ticker in company_tickers %}
-      <div class="post-preview">
-          <h2 class="post-title">
-              {{ company_ticker }}
-          </h2>
-          <h3 class="post-subtitle">
-            {{ company_ticker }}
-          </h3>
-        </a>
-        <p class="post-meta">Posted by
-          <a href="#">{{ company_ticker }}</a>
-          on {{ company_ticker }}
-      </div>
-      <hr>
-      {% endfor %}
-      -->
 {% endblock %}
 
 {% block company_data %}
@@ -38,3 +20,12 @@
      </p>
 {% endblock %}
 
+{% block company_visualization %}
+     <p>The internal rate of return for 
+     {{ data.company_name }} (ticker: {{ data.ticker }}) is {{ data.irr_pct_str }}<br>
+     </p>
+{% endblock %}
+
+{% block company_data_frame %}
+    {{ data.df_html | safe }}
+{% endblock %}
