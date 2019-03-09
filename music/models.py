@@ -18,7 +18,7 @@ class Raag(models.Model):
     description = models.TextField()
     entry_creation_date = models.DateTimeField(default=timezone.now)
     entry_publish_date = models.DateTimeField(blank=True, null=True)
-    entry_creator = models.ForeignKey('auth.User')
+    entry_creator = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
     def publish(self):
         self.entry_publish_date = timezone.now()
