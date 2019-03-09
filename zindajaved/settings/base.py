@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # Our apps
     'blog',
     'music',
+    'vis',
     #'ml',
     #'canals',
 ]
