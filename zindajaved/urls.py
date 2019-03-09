@@ -22,10 +22,10 @@ admin.autodiscover()
 from .views import home, thesis
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^thesis$', thesis, name='thesis'),
-    url(r'^accounts/login/$', django.contrib.auth.views.login, name='login'),
-    url(r'^accounts/logout/$', django.contrib.auth.views.logout, name='logout', kwargs={'next_page': '/blog/list'}),
+    url(r'^accounts/login/$', django.contrib.auth.views.LoginView.as_view(), name='login'),
+    url(r'^accounts/logout/$', django.contrib.auth.views.LogoutView.as_view(), name='logout', kwargs={'next_page': '/blog/list'}),
     url(r'^$', home, name='home'),
     url(r'^blog/', include('blog.urls')),
     #url(r'^ml/', include('ml.urls')),

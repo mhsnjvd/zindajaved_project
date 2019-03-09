@@ -48,13 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Not sure whether we need these or not:
-    # The Django sites framework is required
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
     # MathJax app
-    'django_mathjax',
+    # 'django_mathjax',
     # Our apps
     'blog',
     'music',
@@ -68,7 +63,6 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -119,14 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
-AUTHENTICATION_BACKENDS = (
-    # Default backend -- used to login by username in Django admin
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
 
 
 # Where to redirect if the login is successful
