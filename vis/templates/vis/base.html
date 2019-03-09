@@ -53,30 +53,25 @@
                 <h1>Internal Rate of Return</h1>
             </div>
 
-            <h2>Select the name of the company<h2>
             <div class="row">
-                <div class="col-sm-8 blog-main">
+                <div class="col-sm blog-main">
                     {% block content %}
                     {% endblock %}
                 </div>
             </div>
 
-
-
-
             <div class="row">
-                <p>
-                    $$f(z) = \sum_{k=0}^{\infty} a_k z^k.$$
-                </p>
+                <div class="col-sm blog-main">
+                    {% block company_data %}
+                    {% endblock %}
+                </div>
             </div>
-
-
 
         </div>
 
 
         <footer class="blog-footer">
-        <p>Blog for <a href="{% url 'home' %}">zindajaved</a> by <a href="https://github.com/mhsnjvd">@mohsin</a>.</p>
+        <p>Made for <a href="{% url 'home' %}">zindajaved.com</a> by <a href="https://github.com/mhsnjvd">@mohsin</a>.</p>
           <p>
             <a href="#">Back to top</a>
           </p>

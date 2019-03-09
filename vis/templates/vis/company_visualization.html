@@ -1,0 +1,40 @@
+{% extends 'vis/base.html' %}
+
+{% block content %}
+    <div class="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          Select Company
+          </button>
+          <div class="dropdown-menu">
+              {% for company_ticker in company_tickers %}
+              <a class="dropdown-item" href="{% url 'company_data_view' company_ticker=company_ticker %}">{{ company_ticker }}<br></a>
+              {% endfor %}
+          </div>
+    </div>
+
+    <!---
+    <h3>Select the name of the company<h3>
+      {% for company_ticker in company_tickers %}
+      <div class="post-preview">
+          <h2 class="post-title">
+              {{ company_ticker }}
+          </h2>
+          <h3 class="post-subtitle">
+            {{ company_ticker }}
+          </h3>
+        </a>
+        <p class="post-meta">Posted by
+          <a href="#">{{ company_ticker }}</a>
+          on {{ company_ticker }}
+      </div>
+      <hr>
+      {% endfor %}
+      -->
+{% endblock %}
+
+{% block company_data %}
+     <p>The internal rate of return for 
+     {{ data.company_name }} (ticker: {{ data.ticker }}) is {{ data.irr_pct_str }}<br>
+     </p>
+{% endblock %}
+
