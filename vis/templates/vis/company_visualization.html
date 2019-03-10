@@ -33,11 +33,11 @@
 
     <script type="text/javascript">
 
-    var df_json_value = JSON.parse(JSON.parse(document.getElementById('vis-json-values').textContent));
-    var yBarData = df_json_value.map(function(x){return x['PV residual income (LHS)'];})
-    var yLineData = df_json_value.map(function(x){return x['ROE (RHS)'];})
+    var df_json_value  = JSON.parse(JSON.parse(document.getElementById('vis-json-values').textContent));
+    var yBarData       = df_json_value.map(function(x){return x['PV residual income (LHS)'];})
+    var yLineDataInPct = df_json_value.map(function(x){return x['ROE (RHS)'] * 100.0;})
     var xData = yBarData.map(function(_,i){return(i);});
-    var df_column_names  = JSON.parse(document.getElementById('vis-json-column-names').textContent);
+    //var df_column_names  = JSON.parse(document.getElementById('vis-json-column-names').textContent);
 
     var svg = d3.select(document.getElementById("companySVG"));
     svg.selectAll("*").remove();
@@ -47,52 +47,51 @@
 
     var margin = defineMargins(height, width);
       
-      // Global maximum
-    var maxYData = d3.max(yBarData);
-
-    var minYData = d3.min(yBarData);
 
     // x scale and width gap:
     var xScale = d3.scaleBand()
                  .domain(d3.range(xData.length))
                  .rangeRound([margin.left, width - margin.right])
                  .padding(0.1);
-
-    var yScale = d3.scaleLinear()
+    // Global maximum
+    var maxYData = d3.max(yBarData);
+    var minYData = d3.min(yBarData);
+    var yScaleLeft = d3.scaleLinear()
                    .domain([minYData, maxYData])
                    .range([height-margin.top,  margin.bottom]);
+
     var hScale = d3.scaleLinear()
                    .domain([minYData, maxYData])
                    .range([0, height-margin.top - margin.bottom]); 
+
+    // make another y scale
+    maxYData = d3.max(yLineDataInPct);
+    minYData = d3.min(yLineDataInPct);
+    var yScaleRight = d3.scaleLinear()
+                   .domain([minYData, maxYData])
+                   .range([height-margin.top,  margin.bottom]);
 
     // Plot a horizontal grid of 10 lines:
     var nLines = 10;
     plotHorisontalGrid(svg, margin, nLines);
 
     // Plot historam
-    var bars = plotHistogram( svg, margin, xData, yBarData, xScale, yScale, hScale);          
+    var bars = plotHistogram(svg, margin, xData, yBarData, xScale, yScaleLeft, hScale);          
 
     // Add titles and axes:
-    //plotXAxis(svg, margin, xData, xScale );
-    /*
-    xAxis = d3.axisBottom(xData);
-    svg.append("g").attr("transform", "translate(0," + height + ")").call(xAxis);
-
+    svg.append("g").attr("transform", "translate(0," + (height - margin.top) + ")").call(d3.axisBottom(xScale));
+    svg.append("g").attr("transform", "translate(" + margin.left +  ",0)").call(d3.axisLeft(yScaleLeft));
+    svg.append("g").attr("transform", "translate(" + (width - margin.right) +  ",0)").call(d3.axisRight(yScaleRight));
     addTitle(svg, "PV of Residual Income and ROE");
-    //plotYAxis(svg, margin, yScale);
-    svg.append("g").call(d3.axisLeft(yBarData));
-    plotYLabel(svg, margin, "$");         
-    */
+    plotYLabel(svg, margin, "PV in $");         
+    var xShift = width - margin.right
+    plotYLabel(svg, margin, "ROE (%)", xShift);         
 
     // Add on top a line graph
-    var xData = yLineData.map(function(_,i){return(i);});
-    scalar = yBarData[0]/yLineData[0];
-    //svg.append("g").call(d3.axisRight(yLineData));
-    yLineDataScaled = yLineData.map(function(d){return scalar * d;});
-    plotLine(svg, margin, xData, yLineDataScaled, xScale, yScale, "maroon")
-
-    // Add circles for (x,y) pairs:
-    plotCircles(svg, margin, xData, yLineDataScaled, xScale, yScale, "green")
+    xData = yLineDataInPct.map(function(_,i){return(i);});
+    plotLine(svg, margin, xData, yLineDataInPct, xScale, yScaleRight, "maroon")
+    // Add on top circles for (x,y) pairs:
+    plotCircles(svg, margin, xData, yLineDataInPct, xScale, yScaleRight, "green")
     
     </script>
      <p>The internal rate of return for 
