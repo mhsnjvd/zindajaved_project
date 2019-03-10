@@ -28,11 +28,11 @@ function getVerticalScales(svg, margin, data)
     }
 
     // y scale
-    scales.yScale = d3.scale.linear()
+    scales.yScale = d3.scaleLinear()
               .domain([minyData, maxyData])
               .range([height-margin.top,  margin.bottom]);
 
-    scales.hScale = d3.scale.linear()
+    scales.hScale = d3.scaleLinear()
                    .domain([minyData, maxyData])
                    .range([0, height-margin.top - margin.bottom]);
     return scales;
@@ -255,35 +255,6 @@ function addTitle( svg, title, align)
   return plotTitle;  
 }
 
-
-
-function plotXAxis(svg, margin, xData, xScale, xLabel)
-{
-    height = svg.attr("height");
-    width  = svg.attr("width");
-
-    // add the X Axis
-    svg.append("g")
-       .attr("transform", "translate(0," + height + ")")
-       .call(d3.axisBottom(xData));
-
-    /*
-   // Define the axes
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .orient("bottom")
-        .ticks(4)
-        .tickFormat(function(d, i) { return xData[i]; });      
-
-    // Add the X Axis
-    svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + (height-margin.bottom) + ")")
-    .call(xAxis);
-    return xAxis;
-    */
-}
-
 function plotXLabel( svg, margin, xLabel)
 {
   var height = svg.attr("height");
@@ -299,27 +270,11 @@ function plotXLabel( svg, margin, xLabel)
   return label;  
 }
 
-function plotYAxis(svg, margin, yScale, yLabel)
-{
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left").ticks(6);
-
-    // Add the Y Axis
-    var label = svg.append("g")
-    .attr("class", "y axis")
-    .attr("transform", "translate(" + margin.left + ",0)")
-    .text(yLabel)
-    .call(yAxis);  
-
-    return yAxis;
-}
-
-function plotYLabel( svg, margin, yLabel)
+function plotYLabel(svg, margin, yLabel, xShift=margin.left)
 {
    var label = svg.append("text")
         .attr( "id", "yLabel")
-        .attr("x", margin.left)
+        .attr("x", xShift)
         .attr("y", margin.top  / 2 )
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
