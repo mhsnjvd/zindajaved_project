@@ -53,9 +53,10 @@
     var minYData = d3.min(yBarData);
 
     // x scale and width gap:
-    var xScale = d3.scaleOrdinal()
-             .domain(d3.range(xData.length))
-             .rangeRoundBands( [margin.left, width - margin.right], .6 );
+    var xScale = d3.scaleBand()
+                 .domain(d3.range(xData.length))
+                 .rangeRound([margin.left, width - margin.right])
+                 .padding(0.1);
 
     var yScale = d3.scaleLinear()
                    .domain([minYData, maxYData])
@@ -72,14 +73,21 @@
     var bars = plotHistogram( svg, margin, xData, yBarData, xScale, yScale, hScale);          
 
     // Add titles and axes:
-    plotXAxis(svg, margin, xData, xScale );
+    //plotXAxis(svg, margin, xData, xScale );
+    /*
+    xAxis = d3.axisBottom(xData);
+    svg.append("g").attr("transform", "translate(0," + height + ")").call(xAxis);
+
     addTitle(svg, "PV of Residual Income and ROE");
-    plotYAxis(svg, margin, yScale);
+    //plotYAxis(svg, margin, yScale);
+    svg.append("g").call(d3.axisLeft(yBarData));
     plotYLabel(svg, margin, "$");         
+    */
 
     // Add on top a line graph
     var xData = yLineData.map(function(_,i){return(i);});
     scalar = yBarData[0]/yLineData[0];
+    //svg.append("g").call(d3.axisRight(yLineData));
     yLineDataScaled = yLineData.map(function(d){return scalar * d;});
     plotLine(svg, margin, xData, yLineDataScaled, xScale, yScale, "maroon")
 
