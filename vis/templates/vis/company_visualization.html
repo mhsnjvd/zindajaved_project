@@ -23,11 +23,11 @@
 
 {% block company_visualization %}
     {{ data.df_json|json_script:"vis-json-values" }}
-    {{ data.df_column_names|json_script:"vis-json-column-names" }}
+    {{ data.sector_irr|json_script:"vis-json-sector-data" }}
     {{ data.df_html|json_script:"vis-html-data" }}
 
     <script id="vis-json-values" type="application/json"></script> 
-    <script id="vis-json-column-names" type="application/json"></script> 
+    <script id="vis-json-sector-data" type="application/json"></script> 
     <script id="vis-html-data" type="application/json"></script> 
 
     <script type="text/javascript">
@@ -108,12 +108,21 @@
 {% endblock %}
 
 {% block sector_visualization %}
+
+    {{ data.sector|json_script:"vis-json-sector-name" }}
+    <script id="vis-json-sector-name" type="application/json"></script> 
+
     <script type="text/javascript">
     var svg = d3.select(document.getElementById("sectorSVG"));
     svg.selectAll("*").remove();
     svg.style("background-color", "white"); 
     var height = +svg.attr("height");
     var width  = +svg.attr("width");
+
+    var sector_irr  = JSON.parse(document.getElementById('vis-json-sector-data').textContent);
+    var sector_name = JSON.parse(document.getElementById('vis-json-sector-name').textContent);
+    var xData = Object.keys(sector_irr);
+    var yData = Object.values(sector_irr).map(function(d){return d * 100.0;}); // convert to %
 
     var margin = defineMargins(height, width);
       
@@ -130,8 +139,8 @@
                  .padding(0.1);
 
     // Global maximum
-    var maxYData = d3.max(yBarData);
-    var minYData = d3.min(yBarData);
+    var maxYData = d3.max(yData);
+    var minYData = d3.min(yData);
     var yScaleLeft = d3.scaleLinear()
                    .domain([minYData, maxYData])
                    .range([height-margin.top,  margin.bottom]);
@@ -140,38 +149,22 @@
                    .domain([minYData, maxYData])
                    .range([0, height-margin.top - margin.bottom]); 
 
-    // make another y scale
-    maxYData = d3.max(yLineDataInPct);
-    minYData = d3.min(yLineDataInPct);
-    var yScaleRight = d3.scaleLinear()
-                   .domain([minYData, maxYData])
-                   .range([height-margin.top,  margin.bottom]);
-
     // Plot historam
-    var bars = plotHistogram(svg, margin, xData, yBarData, xScale, yScaleLeft, hScale);          
+    var bars = plotHistogram(svg, margin, xData, yData, xScale, yScaleLeft, hScale);          
 
     // Add titles and axes:
     svg.append("g").attr("transform", "translate(0," + (height - margin.top) + ")").call(d3.axisBottom(xAxisScale));
     svg.append("g").attr("transform", "translate(" + margin.left +  ",0)").call(d3.axisLeft(yScaleLeft));
-    svg.append("g").attr("transform", "translate(" + (width - margin.right) +  ",0)").call(d3.axisRight(yScaleRight));
-    addTitle(svg, "PV of Residual Income and ROE");
+    addTitle(svg, "IRR comparison of " + sector_name + " sector");
 
     svg.append("text")
        .attr("transform", "translate(" + (width/2) + " ," + (height - margin.top/4) + ")")
        .style("text-anchor", "middle")
-       .text("Years");
+       .text("Companies within " + sector_name + " sector");
 
-    plotYLabel(svg, margin, "PV ($)");         
-
-    var xShift = width - margin.right
-    plotYLabel(svg, margin, "ROE (%)", xShift);         
-
-    // Add on top a line graph
-    xData = yLineDataInPct.map(function(_,i){return(i+1);});
-    plotLine(svg, margin, xData, yLineDataInPct, xScale, yScaleRight, "red")
-    // Add on top circles for (x,y) pairs:
-    plotCircles(svg, margin, xData, yLineDataInPct, xScale, yScaleRight, "red")
+    plotYLabel(svg, margin, "IRR (%)");         
     </script>
+
 {% endblock %}
 
 {% block company_data_frame %}
