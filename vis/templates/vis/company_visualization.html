@@ -53,29 +53,38 @@
     var minYData = d3.min(yBarData);
 
     // x scale and width gap:
-    var xScale = d3.scale.ordinal()
+    var xScale = d3.scaleOrdinal()
              .domain(d3.range(xData.length))
              .rangeRoundBands( [margin.left, width - margin.right], .6 );
 
-    var yScale = d3.scale.linear()
+    var yScale = d3.scaleLinear()
                    .domain([minYData, maxYData])
                    .range([height-margin.top,  margin.bottom]);
-    var hScale = d3.scale.linear()
+    var hScale = d3.scaleLinear()
                    .domain([minYData, maxYData])
                    .range([0, height-margin.top - margin.bottom]); 
 
-    plotHorisontalGrid( svg, margin, 10);
+    // Plot a horizontal grid of 10 lines:
+    var nLines = 10;
+    plotHorisontalGrid(svg, margin, nLines);
+
+    // Plot historam
     var bars = plotHistogram( svg, margin, xData, yBarData, xScale, yScale, hScale);          
 
+    // Add titles and axes:
     plotXAxis(svg, margin, xData, xScale );
     addTitle(svg, "PV of Residual Income and ROE");
     plotYAxis(svg, margin, yScale);
     plotYLabel(svg, margin, "$");         
 
+    // Add on top a line graph
     var xData = yLineData.map(function(_,i){return(i);});
     scalar = yBarData[0]/yLineData[0];
     yLineDataScaled = yLineData.map(function(d){return scalar * d;});
-    plotLine( svg, margin, xData, yLineDataScaled, xScale, yScale, "maroon")
+    plotLine(svg, margin, xData, yLineDataScaled, xScale, yScale, "maroon")
+
+    // Add circles for (x,y) pairs:
+    plotCircles(svg, margin, xData, yLineDataScaled, xScale, yScale, "green")
     
     </script>
      <p>The internal rate of return for 
