@@ -18,7 +18,7 @@
         <script src="{% static 'js/d3-tip.js' %}"></script>
         <script src="{% static 'js/plots.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/d3.css' %}">
-        <title>Visualization | zindajaved.com</title>
+        <title>IRR Visualization | zindajaved.com</title>
     </head>
 
     <body>
@@ -50,6 +50,7 @@
                     <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a> 
                 {% endif %}
                 <h1>Internal Rate of Return</h1>
+                <br>
             </div>
 
             <div class="row">
@@ -77,7 +78,7 @@
         <div class="content container">
             <div class="row">
                 <div class="col-sm blog-main">
-                    <svg id="companySVG" height="500" width="900"></svg>
+                    <svg id="companySVG" height="400" width="800"></svg>
                     {% block company_visualization %}
                     {% endblock %}
                 </div>

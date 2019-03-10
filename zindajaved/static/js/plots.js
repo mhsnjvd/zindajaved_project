@@ -5,7 +5,7 @@ function defineMargins(height, width)
      var topMargin = height/8;
      var rightMargin = width/20;
      var bottomMargin = height/8;
-     var leftMargin = width/7;
+     var leftMargin = width/20;
      var margin = {top: topMargin, right: rightMargin, bottom: bottomMargin, left: leftMargin};
      return margin;
 }
