@@ -49,10 +49,11 @@
                 {% else %}
                     <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a> 
                 {% endif %}
-                <h1>Internal Rate of Return</h1>
-                <br>
             </div>
 
+            <br>
+            <h1>Internal Rate of Return</h1>
+            <br>
             <div class="row">
                 <div class="col-sm blog-main">
                     {% block content %}
@@ -80,6 +81,16 @@
                 <div class="col-sm blog-main">
                     <svg id="companySVG" height="400" width="800"></svg>
                     {% block company_visualization %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <h2>Sector Comparison</h2>
+            <br>
+            <div class="row">
+                <div class="col-sm blog-main">
+                    <svg id="sectorSVG" height="400" width="800"></svg>
+                    {% block sector_visualization %}
                     {% endblock %}
                 </div>
             </div>

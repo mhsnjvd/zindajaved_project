@@ -47,7 +47,7 @@ function plotHistogram( svg, margin, xData, yData, xScale, yScale, heightScale, 
     var width  = svg.attr("width");
     
     // Switch to default if no color is passed
-    barColor = barColor || "steelblue";
+    barColor = barColor || "DeepSkyBlue"
     
     if ( typeof(barColor) === "string")
     {
@@ -97,7 +97,7 @@ function plotHistogram( svg, margin, xData, yData, xScale, yScale, heightScale, 
            {
                d3.select(this)                
                .transition()
-               .duration(1000)                                    
+               .duration(200)                                    
                .attr("fill", "blue");
 
                var numberFormatter = d3.format(",.2f");
@@ -110,7 +110,7 @@ function plotHistogram( svg, margin, xData, yData, xScale, yScale, heightScale, 
            {
                d3.select(this)
                .transition()
-               .duration(1000)
+               .duration(500)
                .attr("fill", barColor[i]);
 
                tip.hide();
@@ -383,7 +383,7 @@ function plotCircles(svg, margin, xData, yData, xScale, yScale, circleColor)
     .attr("transform", "translate("+ 0 +","+margin.top+")")
     .attr("id", "circles"+circleColor);
 
-    var normalRadius = 5;
+    var normalRadius = 3;
 
     var circles = circlesSVG.selectAll("circle")
     .data(yData)
@@ -400,7 +400,7 @@ function plotCircles(svg, margin, xData, yData, xScale, yScale, circleColor)
     .selectAll("circle")
     .data(yData)
     .transition()
-    .duration(3000)
+    .duration(2000)
     .attr("cx", function(d, i){ return xScale(i) + xScale.bandwidth()/2;})
     .attr("cy", function(d, i){ return yScale(d) - margin.bottom;});
     
@@ -415,7 +415,7 @@ function plotCircles(svg, margin, xData, yData, xScale, yScale, circleColor)
      circles.call(tip);
 
      circles.on("mouseover", function(d){
-        var mouseOnRadius = 9;
+        var mouseOnRadius = 2 * normalRadius;
         var circle = d3.select(this);
         circle.transition()
        .duration(250)
@@ -428,7 +428,7 @@ function plotCircles(svg, margin, xData, yData, xScale, yScale, circleColor)
      });
 
      circles.on("mouseout", function(d){    
-        var mouseOutRadius = 5
+        var mouseOutRadius = normalRadius;
         var circle = d3.select(this);
         circle.transition()
        .duration(250)
@@ -491,7 +491,7 @@ function plotHorisontalBars(svg, margin, categories, values)
              .rangeRoundBands( [margin.top, height - margin.bottom], .2 );
 
     // used for the width of the horizontal bar:
-    var xScale = d3.scale.linear()
+    var xScale = d3.scaleLinear()
             .domain([0, maxVal])
             .range([0, width - margin.right - margin.left ]);
       
