@@ -15,10 +15,9 @@
         <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         <script src="{% static 'js/d3.min.js' %}"></script>
+        <script src="{% static 'js/plots.js' %}"></script>
 
-        <!-- <title>کچھ چھوٹی چھوٹی باتیں</title> -->
         <title>Visualization | zindajaved.com</title>
-
     </head>
 
     <body>
@@ -49,7 +48,6 @@
                 {% else %}
                     <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a> 
                 {% endif %}
-                <!-- <h1 dir='rtl'><a href="{% url 'post_list' %}">کچھ چھوٹی چھوٹی باتیں</a></h1> -->
                 <h1>Internal Rate of Return</h1>
             </div>
 
