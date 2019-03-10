@@ -1,0 +1,105 @@
+{% extends 'vis/base.html' %}
+
+{% block content %}
+    <div class="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          Select Company
+          </button>
+          <div class="dropdown-menu">
+              {% for company_ticker in company_tickers %}
+              <a class="dropdown-item" href="{% url 'company_data_view' company_ticker=company_ticker %}">{{ company_ticker }}<br></a>
+              {% endfor %}
+          </div>
+    </div>
+
+{% endblock %}
+
+{% block company_data %}
+     <p>The internal rate of return for 
+     {{ data.company_name }} (ticker: {{ data.ticker }}, sector: {{ data.sector }}) 
+     is {{ data.irr_pct_str }}<br>
+     </p>
+{% endblock %}
+
+{% block company_visualization %}
+
+    {{ data.df_json|json_script:"vis-json-values" }}
+    {{ data.df_column_names|json_script:"vis-json-column-names" }}
+    {{ data.df_html|json_script:"vis-html-data" }}
+
+    <script id="vis-json-values" type="application/json"></script> 
+    <script id="vis-json-column-names" type="application/json"></script> 
+    <script id="vis-html-data" type="application/json"></script> 
+
+    <script type="text/javascript">
+
+    var df_json_value = JSON.parse(JSON.parse(document.getElementById('vis-json-values').textContent));
+    var yBarData = df_json_value.map(function(x){return x['PV residual income (LHS)'];})
+    var yLineData = df_json_value.map(function(x){return x['ROE (RHS)'];})
+    var xData = yBarData.map(function(_,i){return(i);});
+    var df_column_names  = JSON.parse(document.getElementById('vis-json-column-names').textContent);
+
+    var svg = d3.select(document.getElementById("companySVG"));
+    svg.selectAll("*").remove();
+    svg.style("background-color", "white"); 
+    var height = +svg.attr("height");
+    var width  = +svg.attr("width");
+
+    var margin = defineMargins(height, width);
+      
+      // Global maximum
+    var maxYData = d3.max(yBarData);
+
+    var minYData = d3.min(yBarData);
+
+    // x scale and width gap:
+    var xScale = d3.scaleBand()
+                 .domain(d3.range(xData.length))
+                 .rangeRound([margin.left, width - margin.right])
+                 .padding(0.1);
+
+    var yScale = d3.scaleLinear()
+                   .domain([minYData, maxYData])
+                   .range([height-margin.top,  margin.bottom]);
+    var hScale = d3.scaleLinear()
+                   .domain([minYData, maxYData])
+                   .range([0, height-margin.top - margin.bottom]); 
+
+    // Plot a horizontal grid of 10 lines:
+    var nLines = 10;
+    plotHorisontalGrid(svg, margin, nLines);
+
+    // Plot historam
+    var bars = plotHistogram( svg, margin, xData, yBarData, xScale, yScale, hScale);          
+
+    // Add titles and axes:
+    //plotXAxis(svg, margin, xData, xScale );
+    /*
+    xAxis = d3.axisBottom(xData);
+    svg.append("g").attr("transform", "translate(0," + height + ")").call(xAxis);
+
+    addTitle(svg, "PV of Residual Income and ROE");
+    //plotYAxis(svg, margin, yScale);
+    svg.append("g").call(d3.axisLeft(yBarData));
+    plotYLabel(svg, margin, "$");         
+    */
+
+    // Add on top a line graph
+    var xData = yLineData.map(function(_,i){return(i);});
+    scalar = yBarData[0]/yLineData[0];
+    //svg.append("g").call(d3.axisRight(yLineData));
+    yLineDataScaled = yLineData.map(function(d){return scalar * d;});
+    plotLine(svg, margin, xData, yLineDataScaled, xScale, yScale, "maroon")
+
+    // Add circles for (x,y) pairs:
+    plotCircles(svg, margin, xData, yLineDataScaled, xScale, yScale, "green")
+    
+    </script>
+     <p>The internal rate of return for 
+     {{ data.company_name }} (ticker: {{ data.ticker }}) is {{ data.irr_pct_str }}<br>
+     </p>
+{% endblock %}
+
+{% block company_data_frame %}
+    {{ data.df_html | safe }}
+{% endblock %}

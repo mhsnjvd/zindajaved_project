@@ -1,0 +1,168 @@
+{% load staticfiles %}
+{% load mathjax %}
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Add an icon:
+    <link rel="icon" href="../favicon.ico"> 
+    -->
+    <head>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <script src="{% static 'js/d3.min.js' %}"></script>
+
+        {% autoescape off %}
+        {% mathjax_scripts %}
+        {% endautoescape %}
+
+        <!-- <title>کچھ چھوٹی چھوٹی باتیں</title> -->
+        <title>Blog | zindajaved.com</title>
+
+    </head>
+
+    <body>
+        <div class="blog-masthead">
+          <div class="container">
+            <nav class="blog-nav">
+              <a class="blog-nav-item active" href="{% static 'index.html' %}">Home</a>
+              <a class="blog-nav-item" href="{% static 'research.html' %}">Research</a>
+              <a class="blog-nav-item" href="{% static 'publications.html' %}">Publications</a>
+              <a class="blog-nav-item" href="{% static 'teaching.html' %}">Teaching</a>
+              <a class="blog-nav-item" href="{% static 'software.html' %}">Software</a>
+              <a class="blog-nav-item" href="{% static 'cv.html' %}">CV</a>
+              <a class="blog-nav-item" href="{% static 'music.html' %}">Music</a>
+              <a class="blog-nav-item" href="{% static 'languages.html' %}">Languages</a>
+              <a class="blog-nav-item" href="{% static 'poetry.html' %}">Poetry</a>
+              <a class="blog-nav-item" href="{% static 'contact.html' %}">Contact</a>
+              <a class="blog-nav-item" href="{% static 'contact.html' %}">Contact</a>
+            </nav>
+          </div>
+        </div>
+
+        <div class="content container">
+            <div class="page-header">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+                    <a href="{% url 'post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
+                    <p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+                {% else %}
+                    <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a> 
+                {% endif %}
+                <!-- <h1 dir='rtl'><a href="{% url 'post_list' %}">کچھ چھوٹی چھوٹی باتیں</a></h1> -->
+                <h1>Adventures in probability</h1>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>One more toss</h2>
+                    <h4>April 16, 2017</h4>
+                    <p>
+                        Suppose Asma and Babar decide to play a coin 
+                        tossing game. We suppose that Asma 
+                        tosses $n$ fair coins while Babar tosses $n+1$ fair 
+                        coins. The player with more heads wins the game. What 
+                        is the probability that Babar wins the game?
+                    </p>
+
+                    <p>
+                        Let us define the following random variables.
+                        <div style="text-align:left">
+                            $$A_n = \text{# of heads thrown by Asma in $n$ tosses},$$
+                            $$B_n = \text{# of heads thrown by Babar in $n$ tosses}.$$
+                        </div>
+                        We are trying to find the probability $P(B_{n+1} > A_n)$.
+                        Let us now condition on the first $n$ tosses. If $B_{n+1} > A_n$, 
+                        then either $B_n = A_n$, which means that 
+                        the final toss by Babar decides the game, or 
+                        $B_n > A_n$, in which case Babar has already won 
+                        the game in the first $n$ tosses. 
+                        Mathematically, we can write this using the law of total 
+                        probability
+                        $$P(B_{n+1} > A_n) = P(B_{n+1} > A_n | B_n > A_n) P(B_n > A_n)+ 
+                        P(B_{n+1} > A_n | B_n = A_n)P(B_n = A_n).$$
+
+                        <p>
+                        We have 
+                        $$P(B_{n+1} > A_n | B_n > A_n) = 1.$$
+                        However, 
+                        $$P(B_{n+1} > A_n | B_n=A_n ) = 1/2,$$
+                        since Babar's $(n+1)^{st}$ toss is a head only 
+                        with probability $1/2$.
+                        </p>
+
+                        We can therefore write
+                        $$P(B_{n+1} > A_n) = 1 \times P(B_n > A_n) + 
+                        \frac{1}{2} P(B_n = A_n).$$
+
+                        We also have the identity
+                        $$P(A_n = B_n) + P(A_n > B_n) + P(A_n < B_n) = 1.$$
+
+                        Let $P(A_n = B_n) = x$ and $P(A_n > B_n) = p$.
+                        By symmetry, we also have $P(B_n > A_n) = p$. 
+                        Therefore, 
+                        $$2p + x = 1,$$ 
+                        which implies
+                        $$p = \frac{1 - x}{2}.$$
+                        Using this expression, we have 
+                        $$P(B_{n+1} > A_n) = \frac{1 - x}{2} + 
+                        \frac{1}{2} x,$$
+                        which simplifies to the surprising 
+                        result
+                        $$P(B_{n+1} > A_n) = \frac{1}{2}.$$
+
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+
+                <div class="col-sm-8 blog-main">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+
+
+
+
+            <div class="row">
+                <p>
+                    $$f(z) = \sum_{k=0}^{\infty} a_k z^k.$$
+                </p>
+            </div>
+
+
+
+        </div>
+
+
+        <footer class="blog-footer">
+        <p>Blog for <a href="{% url 'home' %}">zindajaved</a> by <a href="https://github.com/mhsnjvd">@mohsin</a>.</p>
+          <p>
+            <a href="#">Back to top</a>
+          </p>
+        </footer>
+
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+      </body>
+</html>

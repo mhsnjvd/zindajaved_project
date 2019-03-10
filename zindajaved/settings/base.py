@@ -48,7 +48,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # MathJax app
+    # 'django_mathjax',
+    # Our apps
     'blog',
+    'music',
+    'vis',
+    #'ml',
+    #'canals',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -57,7 +64,6 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -85,13 +91,10 @@ WSGI_APPLICATION = 'zindajaved.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+# Moved to appropriate settings file
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# It is important to provide site id if django.contrib.sites is to be used
+SITE_ID = 1
 
 
 # Password validation
@@ -113,29 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-AUTHENTICATION_BACKENDS = (
-    # Default backend -- used to login by username in Django admin
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-INSTALLED_APPS += (
-     # The Django sites framework is required
-     'django.contrib.sites',
-     'allauth',
-     'allauth.account',
-     'allauth.socialaccount',
-     # Login via Google
-     'allauth.socialaccount.providers.google',
-)
- 
-SITE_ID = 1
-
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = "none"
-SOCIALACCOUNT_QUERY_EMAIL = True
-LOGIN_REDIRECT_URL = "/"
+# Where to redirect if the login is successful
+LOGIN_REDIRECT_URL = "/blog/list"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -150,6 +132,21 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+# MathJax Settings:
+MATHJAX_ENABLED = True
+MATHJAX_LOCAL_PATH = '/MathJax/'
+#MATHJAX_CONFIG_FILE="TeX-MML-AM_CHTML"
+MATHJAX_CONFIG_FILE = "TeX-AMS-MML_HTMLorMML"
+MATHJAX_CONFIG_DATA = {
+  "tex2jax": {
+    "inlineMath":
+      [
+          ['$','$'],
+          ['\\(','\\)']
+      ]
+  }
+}
 
 # Settings related to static files moved to corresponding
 # setting files

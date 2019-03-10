@@ -2,4 +2,5 @@
 *.swp
 .DS_Store
 zindajaved/static
+vis/internal_rate_of_return
 db.sqlite3
