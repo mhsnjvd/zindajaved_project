@@ -123,9 +123,8 @@
     var sector_irr  = JSON.parse(document.getElementById('vis-json-sector-data').textContent);
     var sector_name = JSON.parse(document.getElementById('vis-json-sector-name').textContent);
     var xData = Object.keys(sector_irr);
-    var yData = Object.values(sector_irr).map(function(d){return d * 100.0;}); // convert to %
 
-    var data = xData.map(function(k){ return {'key':k, 'value':sector_irr[k]};});
+    var data = xData.map(function(k){ return {'key':k, 'value':sector_irr[k] * 100.0};}); //convert to %
 
     var width  = w - margin.left - margin.right;
     var height = h - margin.top - margin.bottom;
@@ -183,33 +182,11 @@
        return height-y(d.value);
        })  
                         
-   svg.selectAll("rect")            
-      .append("title")
-      .text(function(d) {
-      return d.key + ": " + d.value;
-      })
-
-    /*
-   svg.selectAll(".val-label")
-      .data(data)
-      .enter()
-      .append("text")
-      .classed("val-label", true)
-      .attr("x", function(d,i){
-      return x(d.key) + x.bandwidth()/2;
-      })
-      .attr("y", height)                  
-      .transition("label")
-      .delay(function(d, i) {
-      return i * 50;  // gives it a smoother effect
-      })
-      .duration(1000)
-      .attr("y", function(d,i){
-      return y(d.value) - 4;
-      })
-      .attr("text-anchor","middle")
-      .text(function(d){return d.value});
-      */
+       svg.selectAll("rect")            
+       .append("title")
+       .text(function(d) {
+       return d.key + ": " + d.value;
+       })
 
       svg.selectAll(".bar-label")
       .data(data)
@@ -217,7 +194,7 @@
       .append("text")
       .classed("bar-label", true)
       .attr("transform",function(d,i){
-      return "translate(" + (x(d.key) + x.bandwidth()/2 - 8 ) + "," + (height+15) + ")" + " rotate(45)" })
+      return "translate(" + (x(d.key) + x.bandwidth()/2 - 8 ) + "," + (height+15) + ")" + " rotate(90)" })
       .attr("text-anchor","left")
       .text(function(d){return d.key})
         
@@ -247,7 +224,7 @@
        .transition()
        .duration(500)
        .attr("transform", function(d, i) {
-       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(45)" })
+       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(90)" })
        })
 
        d3.select("#byValue").on("click", function() {
@@ -276,52 +253,12 @@
        .transition()
        .duration(500)
        .attr("transform", function(d, i) {
-       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(45)"
+       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(90)"
        })
        })
-
-
-
-
-    /*
-    // x scale and width gap:
-    var xScale = d3.scaleBand()
-                 .domain(d3.range(xData.length))
-                 .rangeRound([margin.left, width - margin.right])
-                 .padding(0.1);
-
-    var xAxisScale = d3.scaleBand()
-                 .domain(xData)
-                 .rangeRound([margin.left, width - margin.right])
-                 .padding(0.1);
-
-    // Global maximum
-    var maxYData = d3.max(yData);
-    var minYData = d3.min(yData);
-    var yScaleLeft = d3.scaleLinear()
-                   .domain([minYData, maxYData])
-                   .range([height-margin.top,  margin.bottom]);
-
-    var hScale = d3.scaleLinear()
-                   .domain([minYData, maxYData])
-                   .range([0, height-margin.top - margin.bottom]); 
-
-    // Plot historam
-    var bars = plotHistogram(svg, margin, xData, yData, xScale, yScaleLeft, hScale);          
-
-    // Add titles and axes:
-    svg.append("g").attr("transform", "translate(0," + (height - margin.top) + ")").call(d3.axisBottom(xAxisScale));
-    svg.append("g").attr("transform", "translate(" + margin.left +  ",0)").call(d3.axisLeft(yScaleLeft));
-    addTitle(svg, "IRR comparison of " + sector_name + " sector");
-
-    svg.append("text")
-       .attr("transform", "translate(" + (width/2) + " ," + (height - margin.top/4) + ")")
-       .style("text-anchor", "middle")
-       .text("Companies within " + sector_name + " sector");
-
 
     plotYLabel(svg, margin, "IRR (%)");         
-    */
+
     </script>
 
 {% endblock %}
