@@ -116,17 +116,174 @@
     var svg = d3.select(document.getElementById("sectorSVG"));
     svg.selectAll("*").remove();
     svg.style("background-color", "white"); 
-    var height = +svg.attr("height");
-    var width  = +svg.attr("width");
+    var h = +svg.attr("height");
+    var w = +svg.attr("width");
+    var margin = defineMargins(h, w);
 
     var sector_irr  = JSON.parse(document.getElementById('vis-json-sector-data').textContent);
     var sector_name = JSON.parse(document.getElementById('vis-json-sector-name').textContent);
     var xData = Object.keys(sector_irr);
     var yData = Object.values(sector_irr).map(function(d){return d * 100.0;}); // convert to %
 
-    var margin = defineMargins(height, width);
-      
+    var data = xData.map(function(k){ return {'key':k, 'value':sector_irr[k]};});
 
+    var width  = w - margin.left - margin.right;
+    var height = h - margin.top - margin.bottom;
+        
+    var x = d3.scaleBand()
+            .domain(data.map(function(d){
+            return d.key;
+            }))
+            .range([margin.left, width])
+            .padding(0.1);
+                    
+    var y = d3.scaleLinear()
+            .domain([0, d3.max(data, function(d){
+            return d.value;
+            })])
+            .range([height, margin.top])
+
+    var yAxis = d3.axisLeft().scale(y)
+            
+    svg.append("g")
+    .attr("class","axis")
+    .attr("transform","translate(" + margin.left + ",0)")
+    .call(yAxis);
+    
+    svg.selectAll("rect")
+       .data(data)
+       .enter()
+       .append("rect")
+       .attr("class","bar")
+       .attr("fill", "DeepSkyBlue")
+       .on("mouseover",function(){
+        d3.select(this)
+       .attr("fill","blue")
+       })              
+       .on("mouseout",function(){
+       d3.select(this)
+       .transition("colorfade")
+       .duration(250)
+       .attr("fill","DeepSkyBlue" )
+       }) 
+       .attr("x", function(d,i){
+       return x(d.key);
+       })
+       .attr("width", x.bandwidth())    
+       .attr("y", height)                  
+       .transition("bars")
+       .delay(function(d, i) {
+       return i * 50;
+       })
+       .duration(1000)
+       .attr("y", function(d,i){
+       return y(d.value);
+       })                 
+       .attr("height", function(d,i){
+       return height-y(d.value);
+       })  
+                        
+   svg.selectAll("rect")            
+      .append("title")
+      .text(function(d) {
+      return d.key + ": " + d.value;
+      })
+
+    /*
+   svg.selectAll(".val-label")
+      .data(data)
+      .enter()
+      .append("text")
+      .classed("val-label", true)
+      .attr("x", function(d,i){
+      return x(d.key) + x.bandwidth()/2;
+      })
+      .attr("y", height)                  
+      .transition("label")
+      .delay(function(d, i) {
+      return i * 50;  // gives it a smoother effect
+      })
+      .duration(1000)
+      .attr("y", function(d,i){
+      return y(d.value) - 4;
+      })
+      .attr("text-anchor","middle")
+      .text(function(d){return d.value});
+      */
+
+      svg.selectAll(".bar-label")
+      .data(data)
+      .enter()
+      .append("text")
+      .classed("bar-label", true)
+      .attr("transform",function(d,i){
+      return "translate(" + (x(d.key) + x.bandwidth()/2 - 8 ) + "," + (height+15) + ")" + " rotate(45)" })
+      .attr("text-anchor","left")
+      .text(function(d){return d.key})
+        
+       d3.select("#byKey").on("click", function() {
+       data.sort(function(a, b) {
+       return d3.ascending(a.key, b.key)
+       })
+       x.domain(data.map(function(d) {
+       return d.key;
+       }));
+
+       svg.selectAll(".bar")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key);
+       })
+
+       svg.selectAll(".val-label")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key) + x.bandwidth() / 2;
+       })
+
+       svg.selectAll(".bar-label")
+       .transition()
+       .duration(500)
+       .attr("transform", function(d, i) {
+       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(45)" })
+       })
+
+       d3.select("#byValue").on("click", function() {
+       data.sort(function(a, b) {
+       return d3.descending(a.value, b.value)
+       })
+       x.domain(data.map(function(d) {
+       return d.key;
+       }));
+
+       svg.selectAll(".bar")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key);
+       })
+
+       svg.selectAll(".val-label")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key) + x.bandwidth() / 2;
+       })
+
+       svg.selectAll(".bar-label")
+       .transition()
+       .duration(500)
+       .attr("transform", function(d, i) {
+       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(45)"
+       })
+       })
+
+
+
+
+    /*
     // x scale and width gap:
     var xScale = d3.scaleBand()
                  .domain(d3.range(xData.length))
@@ -162,7 +319,9 @@
        .style("text-anchor", "middle")
        .text("Companies within " + sector_name + " sector");
 
+
     plotYLabel(svg, margin, "IRR (%)");         
+    */
     </script>
 
 {% endblock %}
