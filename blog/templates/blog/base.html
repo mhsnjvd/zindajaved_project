@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load mathjax %}
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="utf-8">
@@ -16,10 +15,9 @@
         <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         <script src="{% static 'js/d3.min.js' %}"></script>
-
-        {% autoescape off %}
-        {% mathjax_scripts %}
-        {% endautoescape %}
+        <script type="text/javascript" async
+              src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+        </script>
 
         <!-- <title>کچھ چھوٹی چھوٹی باتیں</title> -->
         <title>Blog | zindajaved.com</title>
