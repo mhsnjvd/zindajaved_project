@@ -29,16 +29,16 @@
           <div class="container">
             <nav class="blog-nav">
               <a class="blog-nav-item active" href="{% static 'index.html' %}">Home</a>
-              <a class="blog-nav-item" href="{% static 'research.html' %}">Research</a>
-              <a class="blog-nav-item" href="{% static 'publications.html' %}">Publications</a>
-              <a class="blog-nav-item" href="{% static 'teaching.html' %}">Teaching</a>
-              <a class="blog-nav-item" href="{% static 'software.html' %}">Software</a>
-              <a class="blog-nav-item" href="{% static 'cv.html' %}">CV</a>
-              <a class="blog-nav-item" href="{% static 'music.html' %}">Music</a>
-              <a class="blog-nav-item" href="{% static 'languages.html' %}">Languages</a>
-              <a class="blog-nav-item" href="{% static 'poetry.html' %}">Poetry</a>
-              <a class="blog-nav-item" href="{% static 'contact.html' %}">Contact</a>
-              <a class="blog-nav-item" href="{% static 'contact.html' %}">Contact</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Research</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Publications</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Teaching</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Software</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">CV</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Music</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Languages</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Poetry</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Contact</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Contact</a>
             </nav>
           </div>
         </div>
@@ -66,7 +66,7 @@
                     <p>
                         Suppose Asma and Babar decide to play a coin 
                         tossing game. We suppose that Asma 
-                        tosses $n$ fair coins while Babar tosses $n+1$ fair 
+                        tosses \(n\) fair coins while Babar tosses \(n+1\) fair 
                         coins. The player with more heads wins the game. What 
                         is the probability that Babar wins the game?
                     </p>
@@ -77,12 +77,12 @@
                             $$A_n = \text{# of heads thrown by Asma in $n$ tosses},$$
                             $$B_n = \text{# of heads thrown by Babar in $n$ tosses}.$$
                         </div>
-                        We are trying to find the probability $P(B_{n+1} > A_n)$.
-                        Let us now condition on the first $n$ tosses. If $B_{n+1} > A_n$, 
-                        then either $B_n = A_n$, which means that 
+                        We are trying to find the probability \(P(B_{n+1} > A_n)\).
+                        Let us now condition on the first \(n\) tosses. If \(B_{n+1} > A_n\), 
+                        then either \(B_n = A_n\), which means that 
                         the final toss by Babar decides the game, or 
-                        $B_n > A_n$, in which case Babar has already won 
-                        the game in the first $n$ tosses. 
+                        \(B_n > A_n\), in which case Babar has already won 
+                        the game in the first \(n\) tosses. 
                         Mathematically, we can write this using the law of total 
                         probability
                         $$P(B_{n+1} > A_n) = P(B_{n+1} > A_n | B_n > A_n) P(B_n > A_n)+ 
@@ -93,8 +93,8 @@
                         $$P(B_{n+1} > A_n | B_n > A_n) = 1.$$
                         However, 
                         $$P(B_{n+1} > A_n | B_n=A_n ) = 1/2,$$
-                        since Babar's $(n+1)^{st}$ toss is a head only 
-                        with probability $1/2$.
+                        since Babar's \(n+1)^{st}\) toss is a head only 
+                        with probability \(1/2\).
                         </p>
 
                         We can therefore write
@@ -104,8 +104,8 @@
                         We also have the identity
                         $$P(A_n = B_n) + P(A_n > B_n) + P(A_n < B_n) = 1.$$
 
-                        Let $P(A_n = B_n) = x$ and $P(A_n > B_n) = p$.
-                        By symmetry, we also have $P(B_n > A_n) = p$. 
+                        Let \(P(A_n = B_n) = x\) and \(P(A_n > B_n) = p\).
+                        By symmetry, we also have \(P(B_n > A_n) = p\). 
                         Therefore, 
                         $$2p + x = 1,$$ 
                         which implies
@@ -122,8 +122,6 @@
                 </div>
             </div>
 
-
-
             <div class="row">
 
                 <div class="col-sm-8 blog-main">
@@ -131,17 +129,6 @@
                     {% endblock %}
                 </div>
             </div>
-
-
-
-
-            <div class="row">
-                <p>
-                    $$f(z) = \sum_{k=0}^{\infty} a_k z^k.$$
-                </p>
-            </div>
-
-
 
         </div>
 
@@ -152,7 +139,6 @@
             <a href="#">Back to top</a>
           </p>
         </footer>
-
 
 
         <!-- Bootstrap core JavaScript
