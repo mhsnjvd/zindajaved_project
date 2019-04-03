@@ -57,6 +57,22 @@
             </div>
 
 
+            <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>Links to topics of interest</h2>
+                    <h4>April 2, 2019</h4>
+
+                    <ul class="list-group">
+                        <li class="list-group-item"><a target="_blank" href="https://math.dartmouth.edu/archive/m13w12/public_html/notes/class12.pdf">Jacobian</a></li>
+                        <li class="list-group-item"><a target="_blank" href="https://mtlsites.mit.edu/Courses/6.050/2004/unit9/wyatt.apr.7.pdf">Lagrange Multipliers</a></li>
+                        <li class="list-group-item"><a target="_blank" href="https://projects.iq.harvard.edu/stat110/strategic-practice-problems">Stat 110: Probability</a></li>
+                        <li class="list-group-item"><a target="_blank" href="http://www.math.hawaii.edu/~ramsey/Probability/PokerHands.html">How to count?</a></li>
+                        <li class="list-group-item"><a target="_blank" href="https://github.com/AllenDowney/ThinkBayes2">Computational Bayesian Statistics</a></li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-sm-8 blog-main">
@@ -123,7 +139,100 @@
             </div>
 
             <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>What if \(x^*Ax\) is real?</h2>
+                    <h4>April 3, 2019</h4>
 
+                    <p>Let \(A\) be a square matrix in \(\mathbb{C}^{n \times n} \), 
+                    and suppose that for any vector \(x\) in \(\mathbb{C}^n\),
+                    \(x^*Ax \) is a real number. What can we conclude about \(A\)?
+                    </p>
+
+                    <p>
+                    As we shall prove below, we can actually show that \(A\) is Hermitian, i.e. 
+                    \(A = A^*\).
+                    </p>
+
+                    <p>
+                    Let \( x, y \) be
+                    vectors in \(\mathbb{C}^n\),
+                    then the number \( (x + y)^*A(x+y)\) is 
+                    real by assumption and therefore equals its conjugate, i.e.,
+
+                    $$ (x + y)^*A(x+y) = (x + y)^*A^*(x+y), $$ 
+                    Which after expansion and cancellation of some terms gives, 
+                    $$ x^*Ay + y^*Ax = x^*A^*y + y^*A^*x. $$
+                
+                    Let \(x\) and \(y\) be unit vectors along 
+                    the i-th and j-th axis respectively, i.e., 
+                    let \(x = e_i, y = e_j\) in the above equation and we get,
+
+                    $$ a_{ij} + a_{ji} = \overline{a_{ji}} + \overline{a_{ij}}, $$
+                    which implies
+                    $$ a_{ij} + a_{ji} = \overline{a_{ij} + a_{ji}}, $$
+                    i.e., the number \(a_{ij} + a_{ji} \) equals its 
+                    conjugate and is therefore real. This implies,
+                    $$ Im(a_{ij}) = -Im(a_{ji}) $$
+
+                    Similarly, now choose \(x = ie_i, y=e_j\) and we get
+                    $$ -ia_{ij} + ia_{ji} = -i\overline{a_{ji}} + i\overline{a_{ij}}, $$
+                    which after cancelling the imaginary unit \(i\), gives us
+                    $$ -a_{ij} + a_{ji} = -\overline{a_{ji}} + \overline{a_{ij}}, $$
+                    which we can further re-write as,
+                    $$ a_{ij} - a_{ji} = -\overline{\left(a_{ij} - a_{ji}\right)}, $$
+                    $$ a_{ij} - a_{ji} +\overline{\left(a_{ij} - a_{ji}\right)} = 0, $$
+                    $$ 2 Re(a_{ij} - a_{ji}) = 0. $$
+                    This implies,
+                    $$ Re(a_{ij}) = Re(a_{ji}). $$
+                    The above, together with the earlier equation involing
+                    imaginary parts gives us
+                    $$ a_{ij} = \overline{a_{ji}}. $$
+                    Therefore, 
+                    $$ A = A^*. $$
+
+                    Let us first write \(A\) as
+                    $$ A = B + iC, $$
+                    where 
+                    $$ B = \frac{1}{2} \left(A+A^*\right), $$
+                    and 
+                    $$ C = \frac{1}{2i} \left(A-A^*\right). $$
+
+                    Note that both \(B\) and \(C\) are 
+                    Hermitian.
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>Matrix</h2>
+                    <h4>April 1, 2019</h4>
+                    <p>This is a collection of properties, results and theorems 
+                    about matrices. 
+                    </p>
+
+                    <p>Let \(A\) be a square matrix in \(\mathbb{C}^{n \times n} \), 
+                    and let \(x\) be a vector in \(\mathbb{C}^n\). We define the 
+                    the quadratic form \(Q(x)\) as (note that plain transpose 
+                    instead of conjugate transpose):
+                    $$ Q(x) = x^{T}Ax, $$
+                
+                    Upon expanding the above expression, we can re-write \(Q(x)\) as
+                    $$ Q(x) = x^{T}\frac{(A + A^T)}{2}x.$$
+                    Therefore, \(A\) and \(\frac{(A + A^T)}{2}\) generate the 
+                    same quadratic form, and Since \(\frac{(A + A^T)}{2}\) is 
+                    a symmetric matrix, it suffices to only study quadratic 
+                    forms for symmetric matrices. 
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
                 <div class="col-sm-8 blog-main">
                     {% block content %}
                     {% endblock %}
