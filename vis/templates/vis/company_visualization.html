@@ -22,22 +22,21 @@
 {% endblock %}
 
 {% block company_visualization %}
-
     {{ data.df_json|json_script:"vis-json-values" }}
-    {{ data.df_column_names|json_script:"vis-json-column-names" }}
+    {{ data.sector_irr|json_script:"vis-json-sector-data" }}
     {{ data.df_html|json_script:"vis-html-data" }}
 
     <script id="vis-json-values" type="application/json"></script> 
-    <script id="vis-json-column-names" type="application/json"></script> 
+    <script id="vis-json-sector-data" type="application/json"></script> 
     <script id="vis-html-data" type="application/json"></script> 
 
     <script type="text/javascript">
 
-    var df_json_value = JSON.parse(JSON.parse(document.getElementById('vis-json-values').textContent));
-    var yBarData = df_json_value.map(function(x){return x['PV residual income (LHS)'];})
-    var yLineData = df_json_value.map(function(x){return x['ROE (RHS)'];})
-    var xData = yBarData.map(function(_,i){return(i);});
-    var df_column_names  = JSON.parse(document.getElementById('vis-json-column-names').textContent);
+    var df_json_value  = JSON.parse(JSON.parse(document.getElementById('vis-json-values').textContent));
+    var yBarData       = df_json_value.map(function(x){return x['PV residual income (LHS)'];})
+    var yLineDataInPct = df_json_value.map(function(x){return x['ROE (RHS)'] * 100.0;})
+    var xData          = yBarData.map(function(_,i){return(i+1);});
+    //var df_column_names  = JSON.parse(document.getElementById('vis-json-column-names').textContent);
 
     var svg = d3.select(document.getElementById("companySVG"));
     svg.selectAll("*").remove();
@@ -47,10 +46,6 @@
 
     var margin = defineMargins(height, width);
       
-      // Global maximum
-    var maxYData = d3.max(yBarData);
-
-    var minYData = d3.min(yBarData);
 
     // x scale and width gap:
     var xScale = d3.scaleBand()
@@ -58,46 +53,214 @@
                  .rangeRound([margin.left, width - margin.right])
                  .padding(0.1);
 
-    var yScale = d3.scaleLinear()
+    var xAxisScale = d3.scaleBand()
+                 .domain(xData)
+                 .rangeRound([margin.left, width - margin.right])
+                 .padding(0.1);
+
+    // Global maximum
+    var maxYData = d3.max(yBarData);
+    var minYData = d3.min(yBarData);
+    var yScaleLeft = d3.scaleLinear()
                    .domain([minYData, maxYData])
                    .range([height-margin.top,  margin.bottom]);
+
     var hScale = d3.scaleLinear()
                    .domain([minYData, maxYData])
                    .range([0, height-margin.top - margin.bottom]); 
 
-    // Plot a horizontal grid of 10 lines:
-    var nLines = 10;
-    plotHorisontalGrid(svg, margin, nLines);
+    // make another y scale
+    maxYData = d3.max(yLineDataInPct);
+    minYData = d3.min(yLineDataInPct);
+    var yScaleRight = d3.scaleLinear()
+                   .domain([minYData, maxYData])
+                   .range([height-margin.top,  margin.bottom]);
 
     // Plot historam
-    var bars = plotHistogram( svg, margin, xData, yBarData, xScale, yScale, hScale);          
+    var bars = plotHistogram(svg, margin, xData, yBarData, xScale, yScaleLeft, hScale);          
 
     // Add titles and axes:
-    //plotXAxis(svg, margin, xData, xScale );
-    /*
-    xAxis = d3.axisBottom(xData);
-    svg.append("g").attr("transform", "translate(0," + height + ")").call(xAxis);
-
+    svg.append("g").attr("transform", "translate(0," + (height - margin.top) + ")").call(d3.axisBottom(xAxisScale));
+    svg.append("g").attr("transform", "translate(" + margin.left +  ",0)").call(d3.axisLeft(yScaleLeft));
+    svg.append("g").attr("transform", "translate(" + (width - margin.right) +  ",0)").call(d3.axisRight(yScaleRight));
     addTitle(svg, "PV of Residual Income and ROE");
-    //plotYAxis(svg, margin, yScale);
-    svg.append("g").call(d3.axisLeft(yBarData));
-    plotYLabel(svg, margin, "$");         
-    */
+
+    svg.append("text")
+       .attr("transform", "translate(" + (width/2) + " ," + (height - margin.top/4) + ")")
+       .style("text-anchor", "middle")
+       .text("Years");
+
+    plotYLabel(svg, margin, "PV ($)");         
+
+    var xShift = width - margin.right
+    plotYLabel(svg, margin, "ROE (%)", xShift);         
 
     // Add on top a line graph
-    var xData = yLineData.map(function(_,i){return(i);});
-    scalar = yBarData[0]/yLineData[0];
-    //svg.append("g").call(d3.axisRight(yLineData));
-    yLineDataScaled = yLineData.map(function(d){return scalar * d;});
-    plotLine(svg, margin, xData, yLineDataScaled, xScale, yScale, "maroon")
-
-    // Add circles for (x,y) pairs:
-    plotCircles(svg, margin, xData, yLineDataScaled, xScale, yScale, "green")
+    xData = yLineDataInPct.map(function(_,i){return(i+1);});
+    plotLine(svg, margin, xData, yLineDataInPct, xScale, yScaleRight, "red")
+    // Add on top circles for (x,y) pairs:
+    plotCircles(svg, margin, xData, yLineDataInPct, xScale, yScaleRight, "red")
     
     </script>
      <p>The internal rate of return for 
      {{ data.company_name }} (ticker: {{ data.ticker }}) is {{ data.irr_pct_str }}<br>
      </p>
+{% endblock %}
+
+{% block sector_visualization %}
+
+    {{ data.sector|json_script:"vis-json-sector-name" }}
+    <script id="vis-json-sector-name" type="application/json"></script> 
+
+    <script type="text/javascript">
+    var svg = d3.select(document.getElementById("sectorSVG"));
+    svg.selectAll("*").remove();
+    svg.style("background-color", "white"); 
+    var h = +svg.attr("height");
+    var w = +svg.attr("width");
+    var margin = defineMargins(h, w);
+
+    var sector_irr  = JSON.parse(document.getElementById('vis-json-sector-data').textContent);
+    var sector_name = JSON.parse(document.getElementById('vis-json-sector-name').textContent);
+    var xData = Object.keys(sector_irr);
+
+    var data = xData.map(function(k){ return {'key':k, 'value':sector_irr[k] * 100.0};}); //convert to %
+
+    var width  = w - margin.left - margin.right;
+    var height = h - margin.top - margin.bottom;
+        
+    var x = d3.scaleBand()
+            .domain(data.map(function(d){
+            return d.key;
+            }))
+            .range([margin.left, width])
+            .padding(0.1);
+                    
+    var y = d3.scaleLinear()
+            .domain([0, d3.max(data, function(d){
+            return d.value;
+            })])
+            .range([height, margin.top])
+
+    var yAxis = d3.axisLeft().scale(y)
+            
+    svg.append("g")
+    .attr("class","axis")
+    .attr("transform","translate(" + margin.left + ",0)")
+    .call(yAxis);
+    
+    svg.selectAll("rect")
+       .data(data)
+       .enter()
+       .append("rect")
+       .attr("class","bar")
+       .attr("fill", "DeepSkyBlue")
+       .on("mouseover",function(){
+        d3.select(this)
+       .attr("fill","blue")
+       })              
+       .on("mouseout",function(){
+       d3.select(this)
+       .transition("colorfade")
+       .duration(250)
+       .attr("fill","DeepSkyBlue" )
+       }) 
+       .attr("x", function(d,i){
+       return x(d.key);
+       })
+       .attr("width", x.bandwidth())    
+       .attr("y", height)                  
+       .transition("bars")
+       .delay(function(d, i) {
+       return i * 50;
+       })
+       .duration(1000)
+       .attr("y", function(d,i){
+       return y(d.value);
+       })                 
+       .attr("height", function(d,i){
+       return height-y(d.value);
+       })  
+                        
+       svg.selectAll("rect")            
+       .append("title")
+       .text(function(d) {
+       return d.key + ": " + d.value;
+       })
+
+      svg.selectAll(".bar-label")
+      .data(data)
+      .enter()
+      .append("text")
+      .classed("bar-label", true)
+      .attr("transform",function(d,i){
+      return "translate(" + (x(d.key) + x.bandwidth()/2 - 8 ) + "," + (height+15) + ")" + " rotate(90)" })
+      .attr("text-anchor","left")
+      .text(function(d){return d.key})
+        
+       d3.select("#byKey").on("click", function() {
+       data.sort(function(a, b) {
+       return d3.ascending(a.key, b.key)
+       })
+       x.domain(data.map(function(d) {
+       return d.key;
+       }));
+
+       svg.selectAll(".bar")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key);
+       })
+
+       svg.selectAll(".val-label")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key) + x.bandwidth() / 2;
+       })
+
+       svg.selectAll(".bar-label")
+       .transition()
+       .duration(500)
+       .attr("transform", function(d, i) {
+       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(90)" })
+       })
+
+       d3.select("#byValue").on("click", function() {
+       data.sort(function(a, b) {
+       return d3.descending(a.value, b.value)
+       })
+       x.domain(data.map(function(d) {
+       return d.key;
+       }));
+
+       svg.selectAll(".bar")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key);
+       })
+
+       svg.selectAll(".val-label")
+       .transition()
+       .duration(500)
+       .attr("x", function(d, i) {
+       return x(d.key) + x.bandwidth() / 2;
+       })
+
+       svg.selectAll(".bar-label")
+       .transition()
+       .duration(500)
+       .attr("transform", function(d, i) {
+       return "translate(" + (x(d.key) + x.bandwidth() / 2 - 8) + "," + (height + 15) + ")" + " rotate(90)"
+       })
+       })
+
+    plotYLabel(svg, margin, "IRR (%)");         
+
+    </script>
+
 {% endblock %}
 
 {% block company_data_frame %}

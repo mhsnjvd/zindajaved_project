@@ -18,7 +18,7 @@
         <script src="{% static 'js/d3-tip.js' %}"></script>
         <script src="{% static 'js/plots.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/d3.css' %}">
-        <title>IRR Visualization | zindajaved.com</title>
+        <title>Visualization of Singular Values Decomposition (SVD)| zindajaved.com</title>
     </head>
 
     <body>
@@ -52,7 +52,7 @@
             </div>
 
             <br>
-            <h1>Internal Rate of Return</h1>
+            <h1>SVD</h1>
             <br>
             <div class="row">
                 <div class="col-sm blog-main">
@@ -61,61 +61,6 @@
                 </div>
             </div>
 
-        </div>
-
-        <br>
-
-        <div class="content container">
-            <div class="row">
-                <div class="col-sm blog-main">
-                    {% block company_data %}
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="content container">
-            <div class="row">
-                <div class="col-sm blog-main">
-                    <svg id="companySVG" height="400" width="800"></svg>
-                    {% block company_visualization %}
-                    {% endblock %}
-                </div>
-            </div>
-
-            <h2>Sector Comparison</h2>
-            <br>
-
-            <div class="row">
-                <div class="col-sm-2 blog-main">
-                    <button id="byKey" type="button" class="btn btn-primary">Sort by Name</button>
-                </div>
-                <div class="col-sm-2 blog-main">
-                    <button id="byValue" type="button" class="btn btn-primary">Sort by Value</button>
-                </div>
-            </div>
-            <br>
-
-            <div class="row">
-                <div class="col-sm blog-main">
-                    <svg id="sectorSVG" height="400" width="800"></svg>
-                    {% block sector_visualization %}
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-
-        <div class="content container">
-            <h2>Long Term Growth Data Frame</h2>
-            <br>
-            <div class="row">
-                <div class="col-sm blog-main">
-                    {% block company_data_frame %}
-                    {% endblock %}
-                </div>
-            </div>
         </div>
 
         <footer class="blog-footer">

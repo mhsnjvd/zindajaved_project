@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load mathjax %}
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="utf-8">
@@ -16,10 +15,9 @@
         <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         <script src="{% static 'js/d3.min.js' %}"></script>
-
-        {% autoescape off %}
-        {% mathjax_scripts %}
-        {% endautoescape %}
+        <script type="text/javascript" async
+              src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+        </script>
 
         <!-- <title>کچھ چھوٹی چھوٹی باتیں</title> -->
         <title>Blog | zindajaved.com</title>
@@ -31,16 +29,16 @@
           <div class="container">
             <nav class="blog-nav">
               <a class="blog-nav-item active" href="{% static 'index.html' %}">Home</a>
-              <a class="blog-nav-item" href="{% static 'research.html' %}">Research</a>
-              <a class="blog-nav-item" href="{% static 'publications.html' %}">Publications</a>
-              <a class="blog-nav-item" href="{% static 'teaching.html' %}">Teaching</a>
-              <a class="blog-nav-item" href="{% static 'software.html' %}">Software</a>
-              <a class="blog-nav-item" href="{% static 'cv.html' %}">CV</a>
-              <a class="blog-nav-item" href="{% static 'music.html' %}">Music</a>
-              <a class="blog-nav-item" href="{% static 'languages.html' %}">Languages</a>
-              <a class="blog-nav-item" href="{% static 'poetry.html' %}">Poetry</a>
-              <a class="blog-nav-item" href="{% static 'contact.html' %}">Contact</a>
-              <a class="blog-nav-item" href="{% static 'contact.html' %}">Contact</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Research</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Publications</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Teaching</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Software</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">CV</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Music</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Languages</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Poetry</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Contact</a>
+              <a class="blog-nav-item" href="{% url 'home' %}">Contact</a>
             </nav>
           </div>
         </div>
@@ -59,6 +57,22 @@
             </div>
 
 
+            <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>Links to topics of interest</h2>
+                    <h4>April 2, 2019</h4>
+
+                    <ul class="list-group">
+                        <li class="list-group-item"><a target="_blank" href="https://math.dartmouth.edu/archive/m13w12/public_html/notes/class12.pdf">Jacobian</a></li>
+                        <li class="list-group-item"><a target="_blank" href="https://mtlsites.mit.edu/Courses/6.050/2004/unit9/wyatt.apr.7.pdf">Lagrange Multipliers</a></li>
+                        <li class="list-group-item"><a target="_blank" href="https://projects.iq.harvard.edu/stat110/strategic-practice-problems">Stat 110: Probability</a></li>
+                        <li class="list-group-item"><a target="_blank" href="http://www.math.hawaii.edu/~ramsey/Probability/PokerHands.html">How to count?</a></li>
+                        <li class="list-group-item"><a target="_blank" href="https://github.com/AllenDowney/ThinkBayes2">Computational Bayesian Statistics</a></li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-sm-8 blog-main">
@@ -68,7 +82,7 @@
                     <p>
                         Suppose Asma and Babar decide to play a coin 
                         tossing game. We suppose that Asma 
-                        tosses $n$ fair coins while Babar tosses $n+1$ fair 
+                        tosses \(n\) fair coins while Babar tosses \(n+1\) fair 
                         coins. The player with more heads wins the game. What 
                         is the probability that Babar wins the game?
                     </p>
@@ -79,12 +93,12 @@
                             $$A_n = \text{# of heads thrown by Asma in $n$ tosses},$$
                             $$B_n = \text{# of heads thrown by Babar in $n$ tosses}.$$
                         </div>
-                        We are trying to find the probability $P(B_{n+1} > A_n)$.
-                        Let us now condition on the first $n$ tosses. If $B_{n+1} > A_n$, 
-                        then either $B_n = A_n$, which means that 
+                        We are trying to find the probability \(P(B_{n+1} > A_n)\).
+                        Let us now condition on the first \(n\) tosses. If \(B_{n+1} > A_n\), 
+                        then either \(B_n = A_n\), which means that 
                         the final toss by Babar decides the game, or 
-                        $B_n > A_n$, in which case Babar has already won 
-                        the game in the first $n$ tosses. 
+                        \(B_n > A_n\), in which case Babar has already won 
+                        the game in the first \(n\) tosses. 
                         Mathematically, we can write this using the law of total 
                         probability
                         $$P(B_{n+1} > A_n) = P(B_{n+1} > A_n | B_n > A_n) P(B_n > A_n)+ 
@@ -95,8 +109,8 @@
                         $$P(B_{n+1} > A_n | B_n > A_n) = 1.$$
                         However, 
                         $$P(B_{n+1} > A_n | B_n=A_n ) = 1/2,$$
-                        since Babar's $(n+1)^{st}$ toss is a head only 
-                        with probability $1/2$.
+                        since Babar's \(n+1)^{st}\) toss is a head only 
+                        with probability \(1/2\).
                         </p>
 
                         We can therefore write
@@ -106,8 +120,8 @@
                         We also have the identity
                         $$P(A_n = B_n) + P(A_n > B_n) + P(A_n < B_n) = 1.$$
 
-                        Let $P(A_n = B_n) = x$ and $P(A_n > B_n) = p$.
-                        By symmetry, we also have $P(B_n > A_n) = p$. 
+                        Let \(P(A_n = B_n) = x\) and \(P(A_n > B_n) = p\).
+                        By symmetry, we also have \(P(B_n > A_n) = p\). 
                         Therefore, 
                         $$2p + x = 1,$$ 
                         which implies
@@ -124,26 +138,106 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>What if \(x^*Ax\) is real?</h2>
+                    <h4>April 3, 2019</h4>
+
+                    <p>Let \(A\) be a square matrix in \(\mathbb{C}^{n \times n} \), 
+                    and suppose that for any vector \(x\) in \(\mathbb{C}^n\),
+                    \(x^*Ax \) is a real number. What can we conclude about \(A\)?
+                    </p>
+
+                    <p>
+                    As we shall prove below, we can actually show that \(A\) is Hermitian, i.e. 
+                    \(A = A^*\).
+                    </p>
+
+                    <p>
+                    Let \( x, y \) be
+                    vectors in \(\mathbb{C}^n\),
+                    then the number \( (x + y)^*A(x+y)\) is 
+                    real by assumption and therefore equals its conjugate, i.e.,
+
+                    $$ (x + y)^*A(x+y) = (x + y)^*A^*(x+y), $$ 
+                    Which after expansion and cancellation of some terms gives, 
+                    $$ x^*Ay + y^*Ax = x^*A^*y + y^*A^*x. $$
+                
+                    Let \(x\) and \(y\) be unit vectors along 
+                    the i-th and j-th axis respectively, i.e., 
+                    let \(x = e_i, y = e_j\) in the above equation and we get,
+
+                    $$ a_{ij} + a_{ji} = \overline{a_{ji}} + \overline{a_{ij}}, $$
+                    which implies
+                    $$ a_{ij} + a_{ji} = \overline{a_{ij} + a_{ji}}, $$
+                    i.e., the number \(a_{ij} + a_{ji} \) equals its 
+                    conjugate and is therefore real. This implies,
+                    $$ Im(a_{ij}) = -Im(a_{ji}) $$
+
+                    Similarly, now choose \(x = ie_i, y=e_j\) and we get
+                    $$ -ia_{ij} + ia_{ji} = -i\overline{a_{ji}} + i\overline{a_{ij}}, $$
+                    which after cancelling the imaginary unit \(i\), gives us
+                    $$ -a_{ij} + a_{ji} = -\overline{a_{ji}} + \overline{a_{ij}}, $$
+                    which we can further re-write as,
+                    $$ a_{ij} - a_{ji} = -\overline{\left(a_{ij} - a_{ji}\right)}, $$
+                    $$ a_{ij} - a_{ji} +\overline{\left(a_{ij} - a_{ji}\right)} = 0, $$
+                    $$ 2 Re(a_{ij} - a_{ji}) = 0. $$
+                    This implies,
+                    $$ Re(a_{ij}) = Re(a_{ji}). $$
+                    The above, together with the earlier equation involing
+                    imaginary parts gives us
+                    $$ a_{ij} = \overline{a_{ji}}. $$
+                    Therefore, 
+                    $$ A = A^*. $$
+
+                    Let us first write \(A\) as
+                    $$ A = B + iC, $$
+                    where 
+                    $$ B = \frac{1}{2} \left(A+A^*\right), $$
+                    and 
+                    $$ C = \frac{1}{2i} \left(A-A^*\right). $$
+
+                    Note that both \(B\) and \(C\) are 
+                    Hermitian.
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-8 blog-main">
+                    <div class="post">
+                    <h2>Matrix</h2>
+                    <h4>April 1, 2019</h4>
+                    <p>This is a collection of properties, results and theorems 
+                    about matrices. 
+                    </p>
+
+                    <p>Let \(A\) be a square matrix in \(\mathbb{C}^{n \times n} \), 
+                    and let \(x\) be a vector in \(\mathbb{C}^n\). We define the 
+                    the quadratic form \(Q(x)\) as (note that plain transpose 
+                    instead of conjugate transpose):
+                    $$ Q(x) = x^{T}Ax, $$
+                
+                    Upon expanding the above expression, we can re-write \(Q(x)\) as
+                    $$ Q(x) = x^{T}\frac{(A + A^T)}{2}x.$$
+                    Therefore, \(A\) and \(\frac{(A + A^T)}{2}\) generate the 
+                    same quadratic form, and Since \(\frac{(A + A^T)}{2}\) is 
+                    a symmetric matrix, it suffices to only study quadratic 
+                    forms for symmetric matrices. 
+                    </p>
+                    </div>
+                </div>
+            </div>
 
 
             <div class="row">
-
                 <div class="col-sm-8 blog-main">
                     {% block content %}
                     {% endblock %}
                 </div>
             </div>
-
-
-
-
-            <div class="row">
-                <p>
-                    $$f(z) = \sum_{k=0}^{\infty} a_k z^k.$$
-                </p>
-            </div>
-
-
 
         </div>
 
@@ -154,7 +248,6 @@
             <a href="#">Back to top</a>
           </p>
         </footer>
-
 
 
         <!-- Bootstrap core JavaScript
