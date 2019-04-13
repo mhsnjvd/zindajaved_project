@@ -38,3 +38,13 @@ def post_company_tickers(request):
     # Default view, which selects FaceBook as a company!
     return post_company_data(request, 'FB')
 
+
+def show_svd(request, matrix=np.array([[1.0, 2.0], [3.0, 4.0]])):
+    A = np.random.rand(2,2)
+    m = A.shape[0]
+    n = A.shape[1]
+    U, S, Vh = np.linalg.svd(A)
+    context = {'singular_values': list(S)}
+    return render(request, 'vis/svd_visualization.html', context)
+
+

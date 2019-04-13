@@ -1,0 +1,130 @@
+{% extends 'vis/svd_base.html' %}
+
+{% block content %}
+
+   <div class="row">
+       <p>The singular values are: {{ singular_values }} </p>
+   </div>
+
+   <br>
+
+   <div class="row">
+       <!-- how to pass an argument matrix to the view show_svd below? -->
+       <a class="btn btn-primary" href="{% url 'show_svd' %}" role="button">Compute SVD</a>
+   </div>
+
+   <br>
+
+   <div class="input-group mb-3">
+        <div class="row">
+              <div class="col-sm-6">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text">A[0][0]</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="a_00">
+                  </div>
+              <div class="col-sm-6">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text">A[0][1]</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="a_01">
+                  </div>
+              </div>
+        </div>
+   </div>
+   <br>
+   <div class="input-group mb-3">
+        <div class="row">
+              <div class="col-sm-6">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text">A[1][0]</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="a_10">
+                  </div>
+              <div class="col-sm-6">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text">A[1][1]</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="a_11">
+                  </div>
+              </div>
+        </div>
+   </div>
+
+
+   <div class='row'>
+       <div class='col-sm-6'>
+           <svg id='left-svd' height='300' width='400'></svg>
+       </div>
+
+       <div class='col-sm-6'>
+           <svg id='right-svd' height='300' width='400'></svg>
+       </div>
+   </div>
+   
+
+   <script type="text/javascript">
+      var svg = d3.select(document.getElementById("left-svd"));
+      svg.attr('background-color', 'gray');
+
+      var h = +svg.attr("height");
+      var w = +svg.attr("width");
+      var margin = {top: 20, bottom: 20, left: 20, right: 20};
+      var height = h - margin.top - margin.bottom;
+      var width  = w - margin.left - margin.right;
+
+      var data = [ 
+                    {
+                         cx: w/2, 
+                         cy: h/2, 
+                         r: d3.min([w, h])/8, 
+                         fill_color: 'steelblue',
+                         stroke_color: 'gray',
+                         stroke_width: 5,
+                         rx: d3.min([w, h])/4, 
+                         ry: d3.min([w, h])/8, 
+                    },
+                 ];
+
+      svg.selectAll('circle')
+         .data(data)
+         .enter()
+         .append('circle')
+         .attr('cx', function(d){ return d.cx; })
+         .attr('cy', function(d){ return d.cy; })
+         .attr('r',  function(d){ return d.r; })
+         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+         .style('fill', function(d){ return d.fill_color; })
+         .style('stroke', function(d){ return d.stroke_color; })
+         .style('stroke-width', function(d){ return d.stroke_width; })
+
+
+
+      var svg = d3.select(document.getElementById("right-svd"));
+      svg.attr('background-color', 'gray');
+
+      var h = +svg.attr("height");
+      var w = +svg.attr("width");
+      var margin = {top: 20, bottom: 20, left: 20, right: 20};
+      var height = h - margin.top - margin.bottom;
+      var width  = w - margin.left - margin.right;
+
+      svg.selectAll('ellipse')
+         .data(data)
+         .enter()
+         .append('ellipse')
+         .attr('cx', function(d){ return d.cx; })
+         .attr('cy', function(d){ return d.cy; })
+         .attr('rx', function(d){ return d.rx; })
+         .attr('ry', function(d){ return d.ry; })
+         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+         .style('fill', function(d){ return d.fill_color; })
+         .style('stroke', function(d){ return d.stroke_color; })
+         .style('stroke-width', function(d){ return d.stroke_width; })
+
+   
+   </script>
+
+{% endblock %}
+
+
