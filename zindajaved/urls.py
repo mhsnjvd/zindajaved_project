@@ -24,6 +24,7 @@ from .views import home, thesis
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^thesis$', thesis, name='thesis'),
+    url(r'^karaye_daar$', thesis, name='karaye_daar'),
     url(r'^accounts/login/$', django.contrib.auth.views.LoginView.as_view(), name='login'),
     url(r'^accounts/logout/$', django.contrib.auth.views.LogoutView.as_view(), name='logout', kwargs={'next_page': '/blog/list'}),
     url(r'^$', home, name='home'),
