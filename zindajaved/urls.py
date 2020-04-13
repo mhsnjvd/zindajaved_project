@@ -19,12 +19,12 @@ import django.contrib.auth.views
 
 from django.contrib import admin
 admin.autodiscover()
-from .views import home, thesis
+from .views import home, thesis, karaye_daar
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^thesis$', thesis, name='thesis'),
-    url(r'^karaye_daar$', thesis, name='karaye_daar'),
+    url(r'^karaye_daar$', karaye_daar, name='karaye_daar'),
     url(r'^accounts/login/$', django.contrib.auth.views.LoginView.as_view(), name='login'),
     url(r'^accounts/logout/$', django.contrib.auth.views.LogoutView.as_view(), name='logout', kwargs={'next_page': '/blog/list'}),
     url(r'^$', home, name='home'),

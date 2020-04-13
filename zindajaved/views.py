@@ -7,6 +7,6 @@ def home(request):
 def thesis(request):
     return render(request, "zindajaved/thesis.html", {})
 
-def karaye_daar(requets):
+def karaye_daar(request):
     return render(request, "zindajaved/karaye_daar.html", {})
 
